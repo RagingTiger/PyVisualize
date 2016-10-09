@@ -43,11 +43,11 @@ import numpy as np
 import primefac as pf
 
 # libraries for data visualization
-import h5py
 import matplotlib
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+import h5py
 
 # custom libraries (local directory)
 import square_build
@@ -83,11 +83,17 @@ else:
 
 # gen/func def
 def gen_list(ex_list):
+    '''
+    Generator to take items from object and return them.
+    '''
     for val in ex_list:
         yield val
 
 
 def gen_xy_list(ex_list):
+    '''
+    Function to take x/y item pairs and generate separate lists for each.
+    '''
     x_list, y_list = [], []
     for val in ex_list:
         x_list.append(val[0])
@@ -149,6 +155,9 @@ def crange(value, minval, maxval, palette):
 
 
 def find_group(hdfpath, group_num, gQ, aQ):
+    '''
+    Function to open HDF5 file and return data associated with "group_num".
+    '''
     # constants
     HDFPATH = '/' + str(group_num)
 
@@ -183,6 +192,10 @@ def find_group(hdfpath, group_num, gQ, aQ):
 
 
 def attribute_view(grp, attr_str):
+    '''
+    Function to generate a small Toplevel() window to view attributes of a
+    simulation.
+    '''
     # generate unique name
     tm = str(time.clock())
     var_num = tm.split('.')
@@ -202,7 +215,9 @@ def attribute_view(grp, attr_str):
 
 
 def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
-
+    '''
+    Function to generate x/y plots for all data sets for a given simulation.
+    '''
     # create attribute string and make "global"
     global attr_str
     attr_str = ""
@@ -345,6 +360,10 @@ def gen_heatmap(controller, data_queue, hdfpath):
 
     # func def
     def heatmap_callback(event):
+        '''
+        Function called when mouse event <CLICKED> is triggered on a heatmap
+        tile.
+        '''
         # read mouse click event
         canvas = event.widget
         try:
@@ -436,7 +455,9 @@ def gen_heatmap(controller, data_queue, hdfpath):
 
     # colorbar callback
     def gen_colorbar(cbardict):
-
+        '''
+        Function to create a colorbar to interpret meaning of heatmap colors.
+        '''
         # get dict contents
         colorbarlist = cbardict['colorbarlist']
         rect_width = cbardict['rwidth']

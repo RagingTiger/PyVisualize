@@ -1,26 +1,25 @@
 #!/usr/bin/env python
 '''
-   Copyright 2016 John David Anderson
+Copyright 2016 John David Anderson
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+   http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-'''
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
-''' Author: John D. Anderson
-    Email: jander43@vols.utk.edu
-    Usage: square_build.py 'integer'
-    Description:
-        This program builds the closest approximation to a "perfect" square
-        that is possible with the given integer.
+Author: John D. Anderson
+Email: jander43@vols.utk.edu
+Usage: square_build.py 'integer'
+Description:
+    This program builds the closest approximation to a "perfect" square
+    that is possible with the given integer.
 '''
 
 # libraries
@@ -29,9 +28,13 @@ import math
 import random
 import primefac as pf
 
+
 # functions
 def square_list(dimensions, item_list):
-
+    '''
+    Function to "reshape" the original list into a 2d list with the number of
+    rows and cols determined from square_builder and used in square_print
+    '''
     # list
     array = []
 
@@ -42,10 +45,15 @@ def square_list(dimensions, item_list):
             temp.append(item_list.pop(0))
         array.append(temp)
 
+    # return
     return array
 
-def square_print(row_list):
 
+def square_print(row_list):
+    '''
+    Function to graphically print out a perfect or imperfect square based on
+    build instructions from square_builder function
+    '''
     # print loop
     square = ''
     for item in row_list:
@@ -59,8 +67,12 @@ def square_print(row_list):
     # print square
     print square
 
-def square_builder(number):
 
+def square_builder(number):
+    '''
+    Function to determine how to create the "best" square (perfect or not) and
+    return a list for use by square_list and square_print
+    '''
     # find closest square root
     init_root = pf.introot(number, r=2)
 
