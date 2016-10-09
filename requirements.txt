@@ -1,0 +1,14 @@
+altgraph==0.12
+cycler==0.10.0
+h5py==2.6.0
+macholib==1.7
+matplotlib==1.5.3
+modulegraph==0.12.1
+numpy==1.11.2
+primefac==1.1
+py2app==0.10
+PyInstaller==3.2
+pyparsing==2.1.9
+python-dateutil==2.5.3
+pytz==2016.7
+six==1.10.0
