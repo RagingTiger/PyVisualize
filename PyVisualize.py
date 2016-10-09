@@ -730,6 +730,11 @@ def get_csv(controller):
 
 
 def get_hdf5(controller):
+    '''
+    Function to allow selecting of HDF5 file, generating heatmap for file (by
+    calling gen_heatmap()), and navigating GUI page from the "MainView" page
+    to the "DataView" page.
+    '''
     # choose HDF5 file
     hdfpath = askopenfilename()
 
