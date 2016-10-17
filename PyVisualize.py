@@ -74,11 +74,13 @@ SIMPORTDICT = {
                 'mplcnum': None
               }
 
-# checking path
+# checking path (used if bundled with PyInstaller)
 if getattr(sys, 'frozen', False):
     RTPath = os.path.dirname(sys.executable)
+    print RTPath
 else:
     RTPath = os.path.dirname(os.path.abspath(__file__))
+    print RTPath
 
 
 # gen/func def
@@ -828,7 +830,7 @@ class MainView(ttk.Frame):
         self.grid(column=5, row=12, sticky='nsew')
 
         # loading python image
-        self.gif = Tkinter.PhotoImage(file='media/python_dark.gif')
+        self.gif = Tkinter.PhotoImage(file=RTPath + '/media/python_dark.gif')
         self.py_logo = ttk.Label(self, image=self.gif)
         self.py_logo.pack(pady=20)
 
