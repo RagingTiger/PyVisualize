@@ -36,4 +36,9 @@ coll = COLLECT(exe,
 app = BUNDLE(coll,
              name='PyVisualize.app',
              icon='media/python_dark.icns',
-             bundle_identifier=None)
+             bundle_identifier=None,
+             info_plist={
+                'NSHighResolutionCapable': 'True',
+                },
+             )
+                           
