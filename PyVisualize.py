@@ -573,7 +573,7 @@ def csv2hdf5(fpath, Q):
     # function to creat yourfile.hdf5 save path
     def hdf5_path(argv):
         argname = argv.split('/')
-        csvname = argname[len(argname)-1].split('.')
+        csvname = argname[len(argname)-1].rsplit('.', 1)
         h5name = csvname[0] + ".hdf5"
         pathname = ''
         for i, folder in enumerate(argname):
