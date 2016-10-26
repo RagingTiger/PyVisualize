@@ -549,9 +549,20 @@ def hdf5_linesum(hdfpath):
     Function to count the number of lines in an HDF5 file.
     '''
     with h5py.File(hdfpath, 'r') as hdf5file:
-        for count, grp in enumerate(hdf5file):
+        for count, __ in enumerate(hdf5file):
             pass
         return count+1
+
+
+def gen_hdf5_dnames(hdfpath):
+    '''
+    Generator to return list of data names from the HDF5 file.
+    '''
+    with h5py.File(hdfpath, 'r') as hdf5file:
+        for grp in hdf5file:
+            for dset in hdf5file['/' + grp]:
+                yield dset
+            return
 
 
 def get_filename(filepath):
@@ -630,7 +641,7 @@ def csv2hdf5(fpath, Q):
                                        data=inlist)
 
 
-def read_hdf5(hdf5path, Q):
+def read_hdf5(hdf5path, Q, datapath):
     '''
     Function to read data from HDF5 file and pass to a Queue.
     '''
@@ -640,9 +651,6 @@ def read_hdf5(hdf5path, Q):
     # NOTE: here is where you can implement "choose your heatmap variable"
     #      where they will choose a dataset and time point to compare
     #      simulations ...
-
-    # path to dataset
-    datapath = '/count turtles'
 
     # open hdf5 file
     with h5py.File(hdf5path, 'r') as hdf5file:
@@ -753,13 +761,19 @@ def get_hdf5(controller):
         print 'Non-HDF File Selected'
         return
 
+    # get data set names
+    dnames = [dset for dset in gen_hdf5_dnames(hdfpath)]
+    print dnames
+
     # count lines
     maxprogress = hdf5_linesum(hdfpath)
 
     # generate heatmap canvas
     # 1st: send thread to read data into Queue
+    datapath = '/count turtles'
     dataQ = Queue.Queue()
-    readhdf5_thread = threading.Thread(target=read_hdf5, args=(hdfpath, dataQ))
+    readhdf5_thread = threading.Thread(target=read_hdf5, args=(hdfpath, dataQ,
+                                                               datapath))
     readhdf5_thread.start()
 
     # 2nd: gen heatmap
