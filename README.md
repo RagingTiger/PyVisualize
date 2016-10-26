@@ -4,7 +4,7 @@
 
 ## Synopsis
 
-Repository for **PyVIsualize** software.
+Repository for **PyVisualize** software.
 
 ## Motivation
 
