@@ -77,10 +77,8 @@ SIMPORTDICT = {
 # checking path (used if bundled with PyInstaller)
 if getattr(sys, 'frozen', False):
     RTPath = os.path.dirname(sys.executable)
-    print RTPath
 else:
     RTPath = os.path.dirname(os.path.abspath(__file__))
-    print RTPath
 
 
 # gen/func def
@@ -761,9 +759,10 @@ def get_hdf5(controller):
         print 'Non-HDF File Selected'
         return
 
-    # get data set names
+    # get dataset names
     dnames = [dset for dset in gen_hdf5_dnames(hdfpath)]
-    print dnames
+
+    # offer user choice of dataset for heatmap coloring
 
     # count lines
     maxprogress = hdf5_linesum(hdfpath)
@@ -887,6 +886,28 @@ class DataView(ttk.Frame):
 
         # colorbar for heatmap
         self.colorbar_button = None
+
+
+class HeatmapDataSource(object):
+
+    def __init__(self, root, dlist):
+        # create toplevel window
+        self.master = Tkinter.Toplevel(root)
+
+        # create variable
+        self.var = Tkinter.StringVar()
+
+        # loop over dlist to create checkboxes
+        for text in dlist:
+            c = Tkinter.Radiobutton(
+                self.master, text=text.strip('/'),
+                value=text,
+                command=self.get_choice)
+            c.pack(anchor='w')
+
+    def get_choice(event):
+        print event
+
 
 # executable
 if __name__ == '__main__':
