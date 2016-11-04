@@ -5,7 +5,7 @@ added_files = [
     ('media/python_dark.gif', 'media')
 ]
 
-a = Analysis(['PyVisualize.py'],
+a = Analysis(['pyvisualize.py'],
              pathex=['/Users/TigerJ/CS/Projects/ORNL_CS/PyVisualize'],
              binaries=None,
              datas=added_files,
@@ -41,4 +41,3 @@ app = BUNDLE(coll,
                 'NSHighResolutionCapable': 'True',
                 },
              )
-                           
