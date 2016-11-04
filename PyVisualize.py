@@ -52,6 +52,18 @@ import h5py
 # custom libraries (local directory)
 import square_build
 
+# banner
+banner = '''
+                ______      _   _ _                 _ _
+                | ___ \    | | | (_)               | (_)
+                | |_/ /   _| | | |_ ___ _   _  __ _| |_ _______
+                |  __/ | | | | | | / __| | | |/ _` | | |_  / _ \\
+                | |  | |_| \ \_/ / \__ \ |_| | (_| | | |/ /  __/
+                \_|   \__, |\___/|_|___/\__,_|\__,_|_|_/___\___|
+                       __/ |
+                      |___/
+'''
+
 # constants
 LG_FONT = ('Helvetica', 23)
 SM_FONT = ('Verdana', 16)
@@ -820,6 +832,9 @@ class RootWindow(Tkinter.Tk):
             exec('self.frames[\'%s\'] = obj_frame' % frame)
             obj_frame.grid(row=0, column=0, stick='nsew')
 
+        # print banner
+        print banner
+
         # show frame
         self.show_frame('MainView')
 
@@ -907,6 +922,11 @@ class HeatmapDataSource(object):
 
     def get_choice(event):
         print event
+
+    def block(self):
+        while(self.pressed):
+            pass
+        return self.var
 
 
 # executable
