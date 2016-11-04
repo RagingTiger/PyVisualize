@@ -3,7 +3,7 @@ dmgbuild:
 	dmgbuild -s settings.py -D app=`pwd`/dist/PyVisualize.app "PyVisualize" PyVisualize_MacOSX_10.11.6.dmg
 
 pyinstall:
-	pyinstaller -w PyVisualize.spec
+	pyinstaller -w pyvisualize.spec
 
 clean: 
 	rm -rf build dist
