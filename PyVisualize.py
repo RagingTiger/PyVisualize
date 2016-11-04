@@ -65,6 +65,7 @@ banner = '''
 '''
 
 # constants
+TST = ['/count turtles', '/count turtles sky', '/count turtles pink']
 LG_FONT = ('Helvetica', 23)
 SM_FONT = ('Verdana', 16)
 EXEC = 'exec'
@@ -923,10 +924,10 @@ class HeatmapDataSource(object):
     def get_choice(event):
         print event
 
-    def block(self):
-        while(self.pressed):
-            pass
-        return self.var
+    # def block(self):
+    #     while(self.pressed):
+    #         pass
+    #     return self.var
 
 
 # executable
