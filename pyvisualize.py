@@ -853,7 +853,7 @@ class MainView(ttk.Frame):
     '''
     Class for main GUI menu, showing options (e.g. convert CSV -> HDF5)
     '''
-
+    # constructor
     def __init__(self, parent, controller):
         ttk.Frame.__init__(self, parent, padding=((24,)*4))
         self.grid(column=5, row=12, sticky='nsew')
@@ -905,7 +905,10 @@ class DataView(ttk.Frame):
 
 
 class HeatmapDataSource(object):
-
+    '''
+    Class for choosing data source for heatmap.
+    '''
+    # constructor
     def __init__(self, root, dlist):
         # create toplevel window
         self.master = Tkinter.Toplevel(root)
@@ -917,17 +920,38 @@ class HeatmapDataSource(object):
         for text in dlist:
             c = Tkinter.Radiobutton(
                 self.master, text=text.strip('/'),
+                variable=self.var,
                 value=text,
                 command=self.get_choice)
             c.pack(anchor='w')
 
-    def get_choice(event):
-        print event
+        # set pressed = False
+        self.pressed = False
 
-    # def block(self):
-    #     while(self.pressed):
-    #         pass
-    #     return self.var
+        # create submit button
+        self.submit = ttk.Button(self.master, text='submit',
+                                 command=lambda: self.set_pressed())
+        self.submit.pack(side='bottom')
+
+    def get_choice(event):
+        '''
+        Function for printing out data source selected.
+        '''
+        print event.var.get()
+
+    def set_pressed(self):
+        '''
+        Function to flip 'pressed' flag.
+        '''
+        self.pressed = True
+
+    def exit_choice(self):
+        '''
+        Function to return chosen value.
+        '''
+        while (self.pressed):
+            pass
+        return event.var.get()
 
 
 # executable
