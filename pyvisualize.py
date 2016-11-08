@@ -776,23 +776,24 @@ def get_hdf5(controller):
     dnames = [dset for dset in gen_hdf5_dnames(hdfpath)]
 
     # offer user choice of dataset for heatmap coloring
+    h = HeatmapDataSource(controller, dnames)
 
     # count lines
     maxprogress = hdf5_linesum(hdfpath)
 
-    # generate heatmap canvas
-    # 1st: send thread to read data into Queue
-    datapath = '/count turtles'
-    dataQ = Queue.Queue()
-    readhdf5_thread = threading.Thread(target=read_hdf5, args=(hdfpath, dataQ,
-                                                               datapath))
-    readhdf5_thread.start()
-
-    # 2nd: gen heatmap
-    gen_heatmap(controller, dataQ, hdfpath)
-
-    # show 'DataView' page
-    controller.show_frame('DataView')
+    # # generate heatmap canvas
+    # # 1st: send thread to read data into Queue
+    # datapath = '/count turtles'
+    # dataQ = Queue.Queue()
+    # readhdf5_thread = threading.Thread(target=read_hdf5, args=(hdfpath, dataQ,
+    #                                                            datapath))
+    # readhdf5_thread.start()
+    #
+    # # 2nd: gen heatmap
+    # gen_heatmap(controller, dataQ, hdfpath)
+    #
+    # # show 'DataView' page
+    # controller.show_frame('DataView')
 
 
 def back_to_main(controller):
@@ -904,14 +905,15 @@ class DataView(ttk.Frame):
         self.colorbar_button = None
 
 
-class HeatmapDataSource(object):
+class HeatmapDataSource(Tkinter.Toplevel):
     '''
     Class for choosing data source for heatmap.
     '''
     # constructor
     def __init__(self, root, dlist):
         # create toplevel window
-        self.master = Tkinter.Toplevel(root)
+        Tkinter.Toplevel.__init__(self, root)
+        self.title('Heatmap Data Source')
 
         # create variable
         self.var = Tkinter.StringVar()
@@ -919,39 +921,23 @@ class HeatmapDataSource(object):
         # loop over dlist to create checkboxes
         for text in dlist:
             c = Tkinter.Radiobutton(
-                self.master, text=text.strip('/'),
+                self, text=text.strip('/'),
                 variable=self.var,
-                value=text,
-                command=self.get_choice)
+                value=text)
             c.pack(anchor='w')
 
-        # set pressed = False
-        self.pressed = False
-
         # create submit button
-        self.submit = ttk.Button(self.master, text='submit',
+        self.submit = ttk.Button(self, text='submit',
                                  command=lambda: self.set_pressed())
         self.submit.pack(side='bottom')
 
-    def get_choice(event):
-        '''
-        Function for printing out data source selected.
-        '''
-        print event.var.get()
-
-    def set_pressed(self):
+    def set_pressed(event):
         '''
         Function to flip 'pressed' flag.
         '''
-        self.pressed = True
-
-    def exit_choice(self):
-        '''
-        Function to return chosen value.
-        '''
-        while (self.pressed):
-            pass
-        return event.var.get()
+        name = event.var.get()
+        if name is not '':
+            print name
 
 
 # executable
