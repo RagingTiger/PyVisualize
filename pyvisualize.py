@@ -776,24 +776,10 @@ def get_hdf5(controller):
     dnames = [dset for dset in gen_hdf5_dnames(hdfpath)]
 
     # offer user choice of dataset for heatmap coloring
-    h = HeatmapDataSource(controller, dnames)
+    h = HeatmapDataSource(controller, dnames, hdfpath)
 
-    # count lines
-    maxprogress = hdf5_linesum(hdfpath)
-
-    # # generate heatmap canvas
-    # # 1st: send thread to read data into Queue
-    # datapath = '/count turtles'
-    # dataQ = Queue.Queue()
-    # readhdf5_thread = threading.Thread(target=read_hdf5, args=(hdfpath, dataQ,
-    #                                                            datapath))
-    # readhdf5_thread.start()
-    #
-    # # 2nd: gen heatmap
-    # gen_heatmap(controller, dataQ, hdfpath)
-    #
-    # # show 'DataView' page
-    # controller.show_frame('DataView')
+    # # count lines
+    # maxprogress = hdf5_linesum(hdfpath)
 
 
 def back_to_main(controller):
@@ -910,13 +896,19 @@ class HeatmapDataSource(Tkinter.Toplevel):
     Class for choosing data source for heatmap.
     '''
     # constructor
-    def __init__(self, root, dlist):
+    def __init__(self, root, dlist, filepath):
         # create toplevel window
         Tkinter.Toplevel.__init__(self, root)
         self.title('Heatmap Data Source')
 
         # create variable
         self.var = Tkinter.StringVar()
+
+        # store hdfpath
+        self.hdfpath = filepath
+
+        # store root window
+        self.root = root
 
         # loop over dlist to create checkboxes
         for text in dlist:
@@ -928,16 +920,36 @@ class HeatmapDataSource(Tkinter.Toplevel):
 
         # create submit button
         self.submit = ttk.Button(self, text='submit',
-                                 command=lambda: self.set_pressed())
+                                 command=lambda: self.get_choice())
         self.submit.pack(side='bottom')
 
-    def set_pressed(event):
+        # center window
+        self.root.eval('tk::PlaceWindow %s center' %
+                       self.winfo_pathname(self.winfo_id()))
+
+    def get_choice(self):
         '''
         Function to flip 'pressed' flag.
         '''
-        name = event.var.get()
-        if name is not '':
-            print name
+        # check for empty var
+        datapath = self.var.get()
+        if datapath is not '':
+            # generate heatmap canvas
+            # NOTE: Need to refactor WITHOUT threads ...
+            dataQ = Queue.Queue()
+            readhdf5_thread = threading.Thread(target=read_hdf5,
+                                               args=(self.hdfpath, dataQ,
+                                                     '/'+datapath))
+            readhdf5_thread.start()
+
+            # generate heatmap
+            gen_heatmap(self.root, dataQ, self.hdfpath)
+
+            # show 'DataView' page
+            self.root.show_frame('DataView')
+
+            # then close window
+            self.destroy()
 
 
 # executable
