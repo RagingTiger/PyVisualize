@@ -549,7 +549,7 @@ def csv_linesum(fname):
     Function to count lines in CSV file
     '''
     with open(fname, 'rU') as f:
-        for i, l in enumerate(f):
+        for i, __ in enumerate(f):
             pass
         return i
 
@@ -591,8 +591,11 @@ def csv2hdf5(fpath, Q):
     # limited scope libraries
     import csv
 
-    # function to creat yourfile.hdf5 save path
+    # functions
     def hdf5_path(argv):
+        '''
+        Function to generate path and filename for HDF5 file.
+        '''
         argname = argv.split('/')
         csvname = argname[len(argname)-1].rsplit('.', 1)
         h5name = csvname[0] + ".hdf5"
@@ -953,6 +956,7 @@ class HeatmapDataSource(Tkinter.Toplevel):
 
 # executable
 if __name__ == '__main__':
+
     # launch
     app = RootWindow()
     app.mainloop()
