@@ -790,6 +790,7 @@ def back_to_main(controller):
     '''
     controller.canvas['DataViewCanvas'].destroy()
     controller.frames['DataView'].colorbar_button.destroy()
+    controller.title('PyVisualize')
     controller.show_frame('MainView')
 
 
@@ -832,10 +833,10 @@ class RootWindow(Tkinter.Tk):
         self.eval('tk::PlaceWindow %s center' %
                   self.winfo_pathname(self.winfo_id()))
 
-    def show_frame(self, cont):
+    def show_frame(self, cont, msg=''):
         select_frame = self.frames[cont]
         select_frame.tkraise()
-        print 'Showing: {0}'.format(cont)
+        print 'Showing: {0} {1}'.format(cont, msg)
 
 
 class MainView(ttk.Frame):
@@ -934,21 +935,22 @@ class HeatmapDataSource(Tkinter.Toplevel):
         Function to flip 'pressed' flag.
         '''
         # check for empty var
-        datapath = self.var.get()
-        if datapath is not '':
+        dataset = self.var.get()
+        if dataset is not '':
             # generate heatmap canvas
             # NOTE: Need to refactor WITHOUT threads ...
             dataQ = Queue.Queue()
             readhdf5_thread = threading.Thread(target=read_hdf5,
                                                args=(self.hdfpath, dataQ,
-                                                     '/'+datapath))
+                                                     '/'+dataset))
             readhdf5_thread.start()
 
             # generate heatmap
             gen_heatmap(self.root, dataQ, self.hdfpath)
 
             # show 'DataView' page
-            self.root.show_frame('DataView')
+            self.root.title('PyVisualize: {0} Heatmap'.format(dataset))
+            self.root.show_frame('DataView', '{0} Heatmap'.format(dataset))
 
             # then close window
             self.destroy()
