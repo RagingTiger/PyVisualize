@@ -834,6 +834,9 @@ class RootWindow(Tkinter.Tk):
                   self.winfo_pathname(self.winfo_id()))
 
     def show_frame(self, cont, msg=''):
+        '''
+        Function to move pages of the GUI.
+        '''
         select_frame = self.frames[cont]
         select_frame.tkraise()
         print 'Showing: {0} {1}'.format(cont, msg)
@@ -937,6 +940,7 @@ class HeatmapDataSource(Tkinter.Toplevel):
         # check for empty var
         dataset = self.var.get()
         if dataset is not '':
+
             # generate heatmap canvas
             # NOTE: Need to refactor WITHOUT threads ...
             dataQ = Queue.Queue()
