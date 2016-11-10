@@ -11,9 +11,10 @@ Repository for **PyVisualize** software.
 To distribute source code and binaries for the PyVisualize application.
 
 ## Installation
-```
-COMING SOON
-```
+Currently, only MacOSX versions of the software exist and can be downloaded
+from the [releases](https://github.com/RagingTiger/PyVisualize/releases)
+section:
+
 
 ## License
 This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/RagingTiger/PyVisualize/blob/cd432c4d9fc8ac722cd7fa64657bf662592e5cc1/LICENSE) file for details
