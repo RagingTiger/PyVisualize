@@ -1,8 +1,17 @@
+#PyVisualize: A NetLogo BehaviorSpace data visualization tool
+PyVisualize is a Python-based data visualization tool designed for viewing
+large numbers of simulations from NetLogo BehaviorSpace experiments.
+
 <p align="center">
   <img src="media/python_dark.gif"/>
 </p>
 
-## Purpose
+## Contents
+```
+TODO
+```
+
+## Introduction
 
 Repository for **PyVisualize** software.
 
@@ -35,6 +44,11 @@ git clone url
 ```
 
 where **"url"** is what was copied earlier when you clicked the clipboard icon.
+
+## Tutorial
+```
+TODO
+```
 
 ## License
 This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/RagingTiger/PyVisualize/blob/cd432c4d9fc8ac722cd7fa64657bf662592e5cc1/LICENSE) file for details
