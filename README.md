@@ -1,9 +1,5 @@
-#PyVisualize: A NetLogo BehaviorSpace data visualization tool
-PyVisualize is a Python-based data visualization tool designed for viewing
-large numbers of simulations from NetLogo BehaviorSpace experiments.
-
 <p align="center">
-  <img src="media/python_dark.gif"/>
+  <img src="https://github.com/RagingTiger/PyVisualize/raw/60129b2025b858a8cd2c81288fd3312a5598fa06/media/python_dark.gif"/>
 </p>
 
 ## Contents
