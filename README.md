@@ -13,7 +13,7 @@ Repository for **PyVisualize** software.
 
 ## Installation
 <p align="center">
-  <img src="https://github.com/RagingTiger/gifs/raw/d7d63d1f79c726307a08a1c40ff7901ee9942f98/PyVisualizeDownloadInstallerTutorial.gif"/>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/MkPMPmGfkn8" frameborder="0" allowfullscreen></iframe>
 </p>
 
 ### Download Installer
@@ -25,7 +25,7 @@ section (as shown above).
 <br/>
 
 <p align="center">
-  <img src="https://github.com/RagingTiger/gifs/raw/d7d63d1f79c726307a08a1c40ff7901ee9942f98/PyVisualizeGitCloneTutorial.gif"/>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/fErM8VeD2ZA" frameborder="0" allowfullscreen></iframe>
 </p>
 
 ### Clone Repository
