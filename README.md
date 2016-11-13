@@ -4,7 +4,7 @@
 
 ## Contents
 ```
-TODO
+Under Construction :)
 ```
 
 ## Introduction
@@ -43,7 +43,7 @@ where **"url"** is what was copied earlier when you clicked the clipboard icon.
 
 ## Tutorial
 ```
-TODO
+Under Construction :)
 ```
 
 ## License
