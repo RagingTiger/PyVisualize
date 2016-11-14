@@ -575,6 +575,16 @@ def gen_hdf5_dnames(hdfpath):
             return
 
 
+def dataset_length(hdfpath):
+    '''
+    Function to return length of datasets
+    '''
+    with h5py.File(hdfpath, 'r') as hdf5file:
+        for grp in hdf5file:
+            for dset in hdf5file['/' + grp]:
+                return dset.len()
+
+
 def get_filename(filepath):
     '''
     Function to extract filename from a full path.
@@ -654,34 +664,22 @@ def csv2hdf5(fpath, Q):
                                        data=inlist)
 
 
-def read_hdf5(hdf5path, Q, datapath):
+def read_hdf5(hdf5path, Q, datapath, ticks):
     '''
     Function to read data from HDF5 file and pass to a Queue.
     '''
     # dictionary for data
     data_dict = {}
 
-    # NOTE: here is where you can implement "choose your heatmap variable"
-    #      where they will choose a dataset and time point to compare
-    #      simulations ...
-
     # open hdf5 file
     with h5py.File(hdf5path, 'r') as hdf5file:
         for grp in hdf5file:
             fullpath = '/' + grp + datapath
-            count_turtles_dataset = hdf5file[fullpath][100]
-            data_dict[int(grp)] = count_turtles_dataset[1]
+            dataset = hdf5file[fullpath][ticks]
+            data_dict[int(grp)] = dataset[1]
 
     # list for 2D array
     ls_2d_array = list(gen_list(data_dict.values()))
-
-    # #NOTE: this only works for numbers with square roots
-    # # Rows/Columns for 2D array
-    # columns = int(math.sqrt(len(data_dict)))
-    # rows = columns
-    #
-    # # convert to 2D
-    # data_array = np.array(ls_2d_array).reshape(columns,rows)
 
     # building heatmap
     list_rows = square_build.square_builder(len(ls_2d_array))
@@ -777,8 +775,11 @@ def get_hdf5(controller):
     # get dataset names
     dnames = [dset for dset in gen_hdf5_dnames(hdfpath)]
 
+    # get dataset length
+    dlen = dataset_length(hdfpath)
+
     # offer user choice of dataset for heatmap coloring
-    h = HeatmapDataSource(controller, dnames, hdfpath)
+    h = HeatmapDataSource(controller, dnames, hdfpath, dlen)
 
     # # count lines
     # maxprogress = hdf5_linesum(hdfpath)
@@ -902,7 +903,7 @@ class HeatmapDataSource(Tkinter.Toplevel):
     Class for choosing data source for heatmap.
     '''
     # constructor
-    def __init__(self, root, dlist, filepath):
+    def __init__(self, root, dlist, filepath, dlen):
         # create toplevel window
         Tkinter.Toplevel.__init__(self, root)
         self.title('Heatmap Data Source')
@@ -912,6 +913,9 @@ class HeatmapDataSource(Tkinter.Toplevel):
 
         # store hdfpath
         self.hdfpath = filepath
+
+        # store dset length
+        self.dlen = dlen
 
         # store root window
         self.root = root
@@ -935,7 +939,7 @@ class HeatmapDataSource(Tkinter.Toplevel):
 
     def get_choice(self):
         '''
-        Function to flip 'pressed' flag.
+        Function to generate heatmap from chosen data source.
         '''
         # check for empty var
         dataset = self.var.get()
@@ -946,7 +950,7 @@ class HeatmapDataSource(Tkinter.Toplevel):
             dataQ = Queue.Queue()
             readhdf5_thread = threading.Thread(target=read_hdf5,
                                                args=(self.hdfpath, dataQ,
-                                                     '/'+dataset))
+                                                     '/'+dataset, 100))
             readhdf5_thread.start()
 
             # generate heatmap
