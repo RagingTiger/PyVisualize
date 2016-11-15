@@ -64,7 +64,6 @@ banner = '''
 '''
 
 # constants
-TST = ['/count turtles', '/count turtles sky', '/count turtles pink']
 LG_FONT = ('Helvetica', 23)
 SM_FONT = ('Verdana', 16)
 EXEC = 'exec'
@@ -582,7 +581,8 @@ def dataset_length(hdfpath):
     with h5py.File(hdfpath, 'r') as hdf5file:
         for grp in hdf5file:
             for dset in hdf5file['/' + grp]:
-                return dset.len()
+                return hdf5file['/' + grp + '/' + dset].len()
+        return 0
 
 
 def get_filename(filepath):
@@ -675,8 +675,8 @@ def read_hdf5(hdf5path, Q, datapath, ticks):
     with h5py.File(hdf5path, 'r') as hdf5file:
         for grp in hdf5file:
             fullpath = '/' + grp + datapath
-            dataset = hdf5file[fullpath][ticks]
-            data_dict[int(grp)] = dataset[1]
+            datapoint = hdf5file[fullpath][ticks]
+            data_dict[int(grp)] = datapoint[1]
 
     # list for 2D array
     ls_2d_array = list(gen_list(data_dict.values()))
@@ -915,10 +915,18 @@ class HeatmapDataSource(Tkinter.Toplevel):
         self.hdfpath = filepath
 
         # store dset length
-        self.dlen = dlen
+        self.range = dlen - 1
+
+        # store ticks value from entry
+        self.timepoint = Tkinter.IntVar()
 
         # store root window
         self.root = root
+
+        # create entry box
+        self.entry = ttk.Entry(self, textvariable=self.timepoint)
+        self.timepoint.set('Enter Integer from 0 to {0}'.format(self.range))
+        self.entry.pack()
 
         # loop over dlist to create checkboxes
         for text in dlist:
@@ -941,16 +949,23 @@ class HeatmapDataSource(Tkinter.Toplevel):
         '''
         Function to generate heatmap from chosen data source.
         '''
+
+        # check for int
+        try:
+            ticks = self.timepoint.get()
+        except:
+            return
+
         # check for empty var
         dataset = self.var.get()
-        if dataset is not '':
+        if dataset is not '' and ticks <= self.range and ticks >= 0:
 
             # generate heatmap canvas
             # NOTE: Need to refactor WITHOUT threads ...
             dataQ = Queue.Queue()
             readhdf5_thread = threading.Thread(target=read_hdf5,
                                                args=(self.hdfpath, dataQ,
-                                                     '/'+dataset, 100))
+                                                     '/'+dataset, ticks))
             readhdf5_thread.start()
 
             # generate heatmap
