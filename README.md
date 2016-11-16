@@ -30,7 +30,7 @@ section (as shown above).
 
 ### Clone Repository
 The repository can also be cloned to your local desktop. Simply navigate to
-the green button titled **Clone or download**, click the button, and then click
+the [green button](https://github.com/RagingTiger/PyVisualize) titled **Clone or download**, click the button, and then click
 the small **"clipboard"** icon to copy the url. Then, on your local machine
 open a terminal application and navigate to the directory you would like to
 clone the repository and execute the following:
