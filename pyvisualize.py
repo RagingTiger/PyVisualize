@@ -90,9 +90,10 @@ if getattr(sys, 'frozen', False):
     RTPath = os.path.dirname(sys.executable)
 else:
     RTPath = os.path.dirname(os.path.abspath(__file__))
+    print banner
 
 
-# gen/func def
+# generators and functions 
 def gen_list(ex_list):
     '''
     Generator to take items from object and return them.
@@ -824,9 +825,6 @@ class RootWindow(Tkinter.Tk):
             exec('self.frames[\'%s\'] = obj_frame' % frame)
             obj_frame.grid(row=0, column=0, stick='nsew')
 
-        # print banner
-        print banner
-
         # show frame
         self.show_frame('MainView')
 
@@ -900,19 +898,19 @@ class DataView(ttk.Frame):
 
 class HeatmapDataSource(Tkinter.Toplevel):
     '''
-    Class for choosing data source for heatmap.
+    Class for generating data source choosing window for heatmap.
     '''
     # constructor
-    def __init__(self, root, dlist, filepath, dlen):
+    def __init__(self, root, dlist, fpath, dlen):
         # create toplevel window
         Tkinter.Toplevel.__init__(self, root)
-        self.title('Heatmap Data Source')
+        self.title('Heatmap Data Source: {0}'.format(fpath.rsplit('/', 1)[1]))
 
         # create variable
         self.var = Tkinter.StringVar()
 
         # store hdfpath
-        self.hdfpath = filepath
+        self.hdfpath = fpath
 
         # store dset length
         self.range = dlen - 1
@@ -941,11 +939,14 @@ class HeatmapDataSource(Tkinter.Toplevel):
                                  command=lambda: self.get_choice())
         self.submit.pack(side='bottom')
 
+        # bind to widget
+        self.bind("<Return>", self.get_choice)
+
         # center window
         self.root.eval('tk::PlaceWindow %s center' %
                        self.winfo_pathname(self.winfo_id()))
 
-    def get_choice(self):
+    def get_choice(self, event=None):
         '''
         Function to generate heatmap from chosen data source.
         '''
@@ -972,7 +973,10 @@ class HeatmapDataSource(Tkinter.Toplevel):
             gen_heatmap(self.root, dataQ, self.hdfpath)
 
             # show 'DataView' page
-            self.root.title('PyVisualize: {0} Heatmap'.format(dataset))
+            left = 'Heatmap({0})'.format(dataset)
+            right = 'TimePoint({0})'.format(ticks)
+            title = 'PyVisualize: ' + left + ' | ' + right
+            self.root.title(title)
             self.root.show_frame('DataView', '{0} Heatmap'.format(dataset))
 
             # then close window
