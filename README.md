@@ -43,12 +43,12 @@ where **"url"** is what was copied earlier when you clicked the clipboard icon.
 
 ## Tutorial
 <p align="center">
-  <a href="http://www.youtube.com/watch?feature=player_embedded&v=wsCRWob480Y" target="_blank"><img src="http://img.youtube.com/vi/wsCRWob480Y/0.jpg"
+  <a href="http://www.youtube.com/watch?feature=player_embedded&v=wsCRWob480Y" target="_blank"> <img src="http://img.youtube.com/vi/wsCRWob480Y/0.jpg"
   alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 </p>
 
 <p align="center">
-  Click the **tutorial** above to learn about **PyVisualize's features**.
+  Click the tutorial above to learn about PyVisualize's features.
 </p>
 
 ## License
