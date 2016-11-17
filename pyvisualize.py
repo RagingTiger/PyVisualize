@@ -93,7 +93,7 @@ else:
     print banner
 
 
-# generators and functions 
+# generators and functions
 def gen_list(ex_list):
     '''
     Generator to take items from object and return them.
@@ -226,6 +226,7 @@ def attribute_view(grp, attr_str):
     exec attr_tplvl_code
 
 
+# NOTE: Needs to be refactored to a class
 def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
     '''
     Function to generate x/y plots for all data sets for a given simulation.
@@ -939,7 +940,7 @@ class HeatmapDataSource(Tkinter.Toplevel):
                                  command=lambda: self.get_choice())
         self.submit.pack(side='bottom')
 
-        # bind to widget
+        # bind to HeatmapDataSource widget
         self.bind("<Return>", self.get_choice)
 
         # center window
