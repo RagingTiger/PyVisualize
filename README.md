@@ -42,9 +42,14 @@ git clone url
 where **"url"** is what was copied earlier when you clicked the clipboard icon.
 
 ## Tutorial
-```
-Under Construction :)
-```
+<p align="center">
+  <a href="http://www.youtube.com/watch?feature=player_embedded&v=wsCRWob480Y" target="_blank"><img src="http://img.youtube.com/vi/wsCRWob480Y/0.jpg"
+  alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+</p>
+
+<p align="center">
+  Click the **tutorial** above to learn about **PyVisualize's features**.
+</p
 
 ## License
 This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/RagingTiger/PyVisualize/blob/cd432c4d9fc8ac722cd7fa64657bf662592e5cc1/LICENSE) file for details
