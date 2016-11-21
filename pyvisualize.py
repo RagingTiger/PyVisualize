@@ -29,6 +29,7 @@ Usage:
 '''
 
 # libraries for GUI/Threads
+import logging
 import Tkinter
 from tkFileDialog import askopenfilename
 import ttk
@@ -969,6 +970,7 @@ class HeatmapDataSource(Tkinter.Toplevel):
                                                args=(self.hdfpath, dataQ,
                                                      '/'+dataset, ticks))
             readhdf5_thread.start()
+            readhdf5_thread.join()
 
             # generate heatmap
             gen_heatmap(self.root, dataQ, self.hdfpath)
