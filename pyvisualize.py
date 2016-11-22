@@ -597,6 +597,7 @@ def get_filename(filepath):
     return filename
 
 
+# NOTE: Needs to be refactored for use in a subprocess
 def csv2hdf5(fpath, Q):
     '''
     Function to convert CSV data to HDF5.
