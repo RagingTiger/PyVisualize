@@ -967,11 +967,7 @@ class HeatmapDataSource(Tkinter.Toplevel):
             # generate heatmap canvas
             # NOTE: Need to refactor WITHOUT threads ...
             dataQ = Queue.Queue()
-            readhdf5_thread = threading.Thread(target=read_hdf5,
-                                               args=(self.hdfpath, dataQ,
-                                                     '/'+dataset, ticks))
-            readhdf5_thread.start()
-            readhdf5_thread.join()
+            read_hdf5(self.hdfpath, dataQ, '/'+dataset, ticks)
 
             # generate heatmap
             gen_heatmap(self.root, dataQ, self.hdfpath)
