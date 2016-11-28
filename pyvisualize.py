@@ -90,7 +90,13 @@ SIMPORTDICT = {
 if getattr(sys, 'frozen', False):
     RTPath = os.path.dirname(sys.executable)
 else:
+    # get the right path
     RTPath = os.path.dirname(os.path.abspath(__file__))
+
+    # set debug to true
+    logging.basicConfig(level=logging.DEBUG)
+
+    # self-explanatory
     print banner
 
 
@@ -398,7 +404,7 @@ def gen_heatmap(controller, data_queue, hdfpath):
         simulation_data_portfolio(grp_num, grpQ, attrQ, controller)
 
         # return
-        print 'Showing: Data Portfolio for Group {0}'.format(grp_num)
+        logging.info('Showing: Data Portfolio for Group {0}'.format(grp_num))
 
     # 2d array from HDF5 file
     heat_map = data_queue.get()
@@ -839,7 +845,7 @@ class RootWindow(Tkinter.Tk):
         '''
         select_frame = self.frames[cont]
         select_frame.tkraise()
-        print 'Showing: {0} {1}'.format(cont, msg)
+        logging.info('Showing: {0} {1}'.format(cont, msg))
 
 
 class MainView(ttk.Frame):
