@@ -235,7 +235,6 @@ def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
     # create attribute string and make "global"
     attr_str = ""
     for attr_list in iter(attrQ.get, None):
-        length = len(attr_list)
         for i, attributes in enumerate(attr_list):
             tmp_str = "{0}: {1}\n".format(attributes[0], attributes[1])
             attr_str = attr_str + tmp_str
