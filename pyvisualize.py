@@ -233,7 +233,6 @@ def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
     Function to generate x/y plots for all data sets for a given simulation.
     '''
     # create attribute string and make "global"
-    global attr_str
     attr_str = ""
     for attr_list in iter(attrQ.get, None):
         length = len(attr_list)
