@@ -373,8 +373,6 @@ def gen_heatmap(controller, data_queue, hdfpath):
                   points in python", Mar 25 2015 at 22:11,
                   http://stackoverflow.com/a/29269645/6926917
     '''
-    # constants
-    CDIM = 20
 
     # func def
     def heatmap_callback(event):
@@ -418,6 +416,7 @@ def gen_heatmap(controller, data_queue, hdfpath):
     palette = [(0, 0, 1), (0, 0.5, 0), (0, 1, 0), (1, 0.5, 0), (1, 0, 0)]
 
     # rows/columns for heatmap
+    CDIM = 20
     rows, cols = len(heat_map), len(heat_map[0])
     cwidth, cheight = rows * CDIM, cols * CDIM
 
