@@ -363,6 +363,9 @@ def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
     # controller.eval('tk::PlaceWindow %s center' %
     #                 tplvl.winfo_pathname(tplvl.winfo_id()))
 
+    logging.info('Showing: {0} {1}'.format('InnerCanvas',
+                                            frame_innercan.winfo_geometry()))
+
     # return
     return
 
