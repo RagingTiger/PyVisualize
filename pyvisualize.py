@@ -253,21 +253,20 @@ def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
                           command=lambda: attribute_view(grp_name, attr_str))
     attr_btn.pack()
 
-    # create canvas, frame
+    # create canvas
     tplvl_canvas = Tkinter.Canvas(tplvl)
-    can_frame = Tkinter.Frame(tplvl_canvas)
 
     # create scrollbars / add to top level
     tplvl_yscrlbr = Tkinter.Scrollbar(tplvl_canvas, orient='vertical')
     tplvl_xscrlbr = Tkinter.Scrollbar(tplvl_canvas, orient='horizontal')
 
     # innercanvas for matplotlib data
-    frame_innercan = Tkinter.Canvas(can_frame,
-                                    yscrollcommand=tplvl_yscrlbr.set,
-                                    xscrollcommand=tplvl_xscrlbr.set)
+    innercan = Tkinter.Canvas(tplvl_canvas,
+                              yscrollcommand=tplvl_yscrlbr.set,
+                              xscrollcommand=tplvl_xscrlbr.set)
 
     # stor object instances in global dict
-    SIMPORTDICT['simdat'] = frame_innercan
+    SIMPORTDICT['simdat'] = innercan
     SIMPORTDICT['canvas'] = tplvl_canvas
 
     # callback functions
@@ -309,7 +308,7 @@ def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
             a = fig.add_subplot(111)
             a.set_title('Data: {0}'.format(dset_name), fontdict=FONTDICT)
             a.plot(x_list, y_list)
-            fig_canvas = FigureCanvasTkAgg(fig, frame_innercan)
+            fig_canvas = FigureCanvasTkAgg(fig, innercan)
             fig_canvas.get_tk_widget().grid(row=row, column=col,
                                             ipadx=ipadx,
                                             ipady=ipady, sticky='NSEW')
@@ -336,18 +335,17 @@ def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
     # final window/scrollbar configurations
     tplvl_yscrlbr.pack(side='right', fill='y')
     tplvl_xscrlbr.pack(side='bottom', fill='both')
-    frame_innercan.pack(side='left', fill='both', expand=True)
-    can_frame.pack(side='left', expand=True)
-    tplvl_yscrlbr.config(command=frame_innercan.yview)
-    tplvl_xscrlbr.config(command=frame_innercan.xview)
-    frame_innercan.bind('<MouseWheel>', on_vertical, '+')
-    frame_innercan.bind('<Shift-MouseWheel>', on_horizontal, '+')
+    innercan.pack(side='left', fill='both', expand=True)
+    tplvl_yscrlbr.config(command=innercan.yview)
+    tplvl_xscrlbr.config(command=innercan.xview)
+    innercan.bind('<MouseWheel>', on_vertical, '+')
+    innercan.bind('<Shift-MouseWheel>', on_horizontal, '+')
     tplvl_canvas.pack()
     # frame_innercan.update_idletasks()
     # can_frame.update_idletasks()
     # tplvl_canvas.create_window(0, 0, anchor='nw', window=can_frame)
     # tplvl_canvas.bind_all('<Configure>', on_config)
-    frame_innercan.config(scrollregion=scrollregion)
+    innercan.config(scrollregion=scrollregion)
 
     # change dimesions
     ws = tplvl.winfo_screenwidth()
@@ -356,15 +354,15 @@ def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
     y = (hs - can_height) / 2
 
     # adjust window size
-    dims = tplvl.winfo_geometry().split('+')[0].split('x')
-    tplvl.geometry('%dx%d+%d+%d' % (can_width, can_height+40, x, y))
+    # dims = tplvl.winfo_geometry().split('+')[0].split('x')
+    # tplvl.geometry('%dx%d+%d+%d' % (can_width, can_height+40, x, y))
 
     # # center window
     # controller.eval('tk::PlaceWindow %s center' %
     #                 tplvl.winfo_pathname(tplvl.winfo_id()))
 
-    logging.info('Showing: {0} {1}'.format('InnerCanvas',
-                                            frame_innercan.winfo_geometry()))
+    logging.info('Showing: {0} {1}'.format('InnerCanvas bbox:',
+                                           innercan.bbox('all')))
 
     # return
     return
@@ -529,12 +527,16 @@ def gen_heatmap(controller, data_queue, hdfpath):
     xscrlbr.pack(side='bottom', fill='both')
     innercan.pack(side='left', fill='both', expand=True)
     innercan.config(scrollregion=innercan.bbox('all'))
-    # yscrlbr.config(command=innercan.yview)
-    # xscrlbr.config(command=innercan.xview)
     innercan.bind('<Button-1>', heatmap_callback)
-    innercan.bind_all('<MouseWheel>', on_vertical)
-    innercan.bind_all('<Shift-MouseWheel>', on_horizontal)
+
+    # NOTE: scrollbars will not scroll without these bindings
+    # innercan.bind_all('<MouseWheel>', on_vertical)
+    # innercan.bind_all('<Shift-MouseWheel>', on_horizontal)
     can.pack()  # NOTE: must call "pack()" or won't show
+
+    # log
+    logging.info('Showing: {0} {1}'.format('HeatmapCanvas bbox:',
+                                           innercan.bbox('all')))
 
     # return
     return
