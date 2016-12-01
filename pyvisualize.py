@@ -271,10 +271,10 @@ def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
 
     # callback functions
     def on_vertical(event):
-        SIMPORTDICT['simdat'].yview_scroll(-1 * event.delta, 'units')
+        innercan.yview_scroll(-1 * event.delta, 'units')
 
     def on_horizontal(event):
-        SIMPORTDICT['simdat'].xview_scroll(-1 * event.delta, 'units')
+        innercan.xview_scroll(-1 * event.delta, 'units')
 
     def on_config(event):
         innercan = SIMPORTDICT['simdat']
@@ -303,12 +303,16 @@ def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
             ipadx = len(str(ymax)) * 30
             ipady = xmax - 1
 
+            # get new canvas
+            # NOTE: this seemed to make scrollbars work
+            figcan = Tkinter.Canvas(innercan)
+
             # creat figure for canvas
             fig = Figure(figsize=(2, 2), dpi=90)
             a = fig.add_subplot(111)
             a.set_title('Data: {0}'.format(dset_name), fontdict=FONTDICT)
             a.plot(x_list, y_list)
-            fig_canvas = FigureCanvasTkAgg(fig, innercan)
+            fig_canvas = FigureCanvasTkAgg(fig, figcan)
             fig_canvas.get_tk_widget().grid(row=row, column=col,
                                             ipadx=ipadx,
                                             ipady=ipady, sticky='NSEW')
@@ -338,8 +342,8 @@ def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
     innercan.pack(side='left', fill='both', expand=True)
     tplvl_yscrlbr.config(command=innercan.yview)
     tplvl_xscrlbr.config(command=innercan.xview)
-    innercan.bind('<MouseWheel>', on_vertical, '+')
-    innercan.bind('<Shift-MouseWheel>', on_horizontal, '+')
+    innercan.bind('<MouseWheel>', on_vertical)
+    innercan.bind('<Shift-MouseWheel>', on_horizontal)
     tplvl_canvas.pack()
     # frame_innercan.update_idletasks()
     # can_frame.update_idletasks()
@@ -347,13 +351,13 @@ def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
     # tplvl_canvas.bind_all('<Configure>', on_config)
     innercan.config(scrollregion=scrollregion)
 
-    # change dimesions
-    ws = tplvl.winfo_screenwidth()
-    hs = tplvl.winfo_screenheight()
-    x = (ws - can_width) / 2
-    y = (hs - can_height) / 2
+    # # change dimesions
+    # ws = tplvl.winfo_screenwidth()
+    # hs = tplvl.winfo_screenheight()
+    # x = (ws - can_width) / 2
+    # y = (hs - can_height) / 2
 
-    # adjust window size
+    # # adjust window size
     # dims = tplvl.winfo_geometry().split('+')[0].split('x')
     # tplvl.geometry('%dx%d+%d+%d' % (can_width, can_height+40, x, y))
 
@@ -361,6 +365,7 @@ def simulation_data_portfolio(grp_name, grpQ, attrQ, controller):
     # controller.eval('tk::PlaceWindow %s center' %
     #                 tplvl.winfo_pathname(tplvl.winfo_id()))
 
+    # NOTE: seems like bbox() may not be the problem ?
     logging.info('Showing: {0} {1}'.format('InnerCanvas bbox:',
                                            innercan.bbox('all')))
 
@@ -530,8 +535,8 @@ def gen_heatmap(controller, data_queue, hdfpath):
     innercan.bind('<Button-1>', heatmap_callback)
 
     # NOTE: scrollbars will not scroll without these bindings
-    # innercan.bind_all('<MouseWheel>', on_vertical)
-    # innercan.bind_all('<Shift-MouseWheel>', on_horizontal)
+    innercan.bind_all('<MouseWheel>', on_vertical)
+    innercan.bind_all('<Shift-MouseWheel>', on_horizontal)
     can.pack()  # NOTE: must call "pack()" or won't show
 
     # log
