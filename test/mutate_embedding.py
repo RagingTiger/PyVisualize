@@ -27,8 +27,10 @@ s = sin(2*pi*t)
 
 a.plot(t, s)
 
+# NOTE: Tkinter DID NOT like me adding scrollbars
+#       to the 'canvas' object. Must use frame
 outcan = Tk.Canvas(root)
-outcan.pack()
+innercan = Tk.Canvas(outcan)
 
 # create scrollbars / add to top level
 tplvl_yscrlbr = Tk.Scrollbar(outcan, orient='vertical')
@@ -38,12 +40,7 @@ tplvl_xscrlbr = Tk.Scrollbar(outcan, orient='horizontal')
 outcan.config(yscrollcommand=tplvl_yscrlbr.set,
               xscrollcommand=tplvl_xscrlbr.set)
 
-tplvl_yscrlbr.pack(side='right', fill='y')
-tplvl_xscrlbr.pack(side='bottom', fill='both')
-tplvl_yscrlbr.config(command=outcan.yview)
-tplvl_xscrlbr.config(command=outcan.xview)
-
-
+# add plots
 for i in range(3):
 
     # row/columns
@@ -51,12 +48,23 @@ for i in range(3):
     col = i % 3
 
     # a tk.DrawingArea
-    canvas = FigureCanvasTkAgg(f, master=outcan)
+    canvas = FigureCanvasTkAgg(f, innercan)
     canvas.show()
 
     # grid overrides the automatic 'sizing' of the window
     canvas.get_tk_widget().grid(row=row, column=col, sticky='NSEW')
 
+# resize window
+width = root.winfo_screenwidth()
+height = root.winfo_screenheight()
+root.geometry(str(width) + "x" + str(height))
+
+tplvl_yscrlbr.pack(side='right', fill='y')
+tplvl_xscrlbr.pack(side='bottom', fill='both')
+tplvl_yscrlbr.config(command=outcan.yview)
+tplvl_xscrlbr.config(command=outcan.xview)
+innercan.pack()
+outcan.pack()
 
 Tk.mainloop()
 # If you put root.destroy() here, it will cause an error if
