@@ -28,7 +28,7 @@ s = sin(2*pi*t)
 a.plot(t, s)
 
 # NOTE: Tkinter DID NOT like me adding scrollbars
-#       to the 'canvas' object. Must use frame
+#       directly to canvas. Must use two canvases
 outcan = Tk.Canvas(root)
 innercan = Tk.Canvas(outcan)
 
@@ -52,17 +52,28 @@ for i in range(3):
     canvas.show()
 
     # grid overrides the automatic 'sizing' of the window
-    canvas.get_tk_widget().grid(row=row, column=col, sticky='NSEW')
+    canvas.get_tk_widget().pack()
 
 # resize window
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
-root.geometry(str(width) + "x" + str(height))
+# root.geometry(str(width) + "x" + str(height))
 
 tplvl_yscrlbr.pack(side='right', fill='y')
 tplvl_xscrlbr.pack(side='bottom', fill='both')
 tplvl_yscrlbr.config(command=outcan.yview)
 tplvl_xscrlbr.config(command=outcan.xview)
+
+# NOTE: When your 'bbox'is 'None', it means
+#       that there isn't anything on your widget
+#       (e.g. a canvas with no shapes/content).
+#       Therefore the scrollbars have nothing to
+#       scroll ... So maybe the way to solve this
+#       is to add some object to the canvas
+#       (like we do in the heatmap) and just lay
+#       the figure ontop?
+print outcan.bbox('all')
+# innercan.config(scrollregion=innercan.bbox('all'))
 innercan.pack()
 outcan.pack()
 
